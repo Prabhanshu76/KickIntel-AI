@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenCV Video Stream</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+        }
+
+        h1 {
+            color: #e44d26; /* Orange color for emphasis */
+            margin-bottom: 20px;
+        }
+
+        #video-frame {
+            width: 80%;
+            max-width: 800px;
+            border: 2px solid #e44d26; /* Orange color for emphasis */
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-width: 1200px; 
+        }
+
+        #info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #info p {
+            margin: 8px 0;
+            font-size: 18px;
+            color: #e44d26; /* Orange color for emphasis */
+        }
+
+        #info span {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        #myBtn {
+            /* display: none; */
+            /* position: fixed; */
+            top: 200px;
+            left: 200px;
+            z-index: 1000;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <form action="/" >
+        <input type="submit" value="Home" id="myBtn">
+    </form>
+  
+    <h1>Soccer Match Analysis</h1>
+
+    <div id="video-frame">
+        <img src="{{ url_for('video_feed') }}" alt="Video Stream" id="video">
+    </div>
+
+    <div id="info">
+        <p>Team 1 Passes: <span id="team1-passes">0</span></p>
+        <p>Team 2 Passes: <span id="team2-passes">0</span></p>
+        <p>Team 1 Possession: <span id="team1-possession">0.00%</span></p>
+        <p>Team 2 Possession: <span id="team2-possession">0.00%</span></p>
+    </div>
+
+    <script>
+        // Update the information using JavaScript
+        function updateInfo() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('team1-passes').innerText = data.team1_passes;
+                    document.getElementById('team2-passes').innerText = data.team2_passes;
+                    document.getElementById('team1-possession').innerText = data.team1_possession_percentage.toFixed(2) + '%';
+                    document.getElementById('team2-possession').innerText = data.team2_possession_percentage.toFixed(2) + '%';
+                });
+        }
+
+        // Update the information every second (adjust as needed)
+        setInterval(updateInfo, 1000);
+    </script>
+</body>
+
+</html>

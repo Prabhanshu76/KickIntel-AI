@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+  <!-- slider stylesheet -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" /> -->
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+<!-- 
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap" rel="stylesheet" /> -->
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  <form action="/">
+    <input type="submit" value="Home" id="myBtn">
+</form>
+  <section id="video-section">
+    <h2>Uploaded Video</h2>
+    <video controls>
+      <source src="{{ url_for('static', filename='uploads/' + filename) }}" type="video/mp4">
+      Your browser does not support the video tag.
+  </video>
+
+    <form action="/process_video" method="post" >
+      <input type="submit" value="Process Video" id="myBtn">
+  </form>
+
+</section>
+
+  
+  <!-- <section class="class_section ">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto">
+          <div class="class_container">
+            <div class="row">
+              <div class="col-lg-9 col-md-10">
+                <div class="heading_container">
+                  <h2>
+                    Uploaded Video
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="class_box-container">
+              <video width="900" height="500" controls>
+                <source src="{{ url_for('static', filename='uploads/' + filename) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            </div>
+            <div>
+                <form action="/process_video" method="post" >
+                  <input type="submit" value="Process Video" id="myBtn">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+</body>
+
+</html>
