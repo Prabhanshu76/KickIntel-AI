@@ -4,6 +4,8 @@ from detection_utility import detections2boxes, match_detections_with_tracks
 from config import parse_config, load_model, load_video_capture, load_boundaries, load_objects, get_player_in_possession_proximity, torch
 from geometry_utilities import  Detection, filter_detections_by_class
 import configparser
+from get_train_data import extract_player_images
+from jersey_classifier_kmeans import PlayerJerseyClassifier
 
 
 app = Flask(__name__)
@@ -12,6 +14,10 @@ team1_passes = team2_passes = team1_possession_percentage = team2_possession_per
 config = parse_config("config.ini")
 model = load_model(config['Paths']['WEIGHTS_PATH'])
 video_file_path = ''
+
+
+
+
 
 
 def generate_frames():
@@ -26,6 +32,11 @@ def generate_frames():
 
     global team1_passes, team2_passes, team1_possession_percentage, team2_possession_percentage
     possession_team=""
+
+    player_data=extract_player_images()
+    print(player_data)
+    pjc = PlayerJerseyClassifier()
+    pjc.train_kmeans_model(player_data)
 
     player_in_possession_detection = None
     player_in_possession_track_id = None
@@ -75,7 +86,10 @@ def generate_frames():
                     rect = player_detection.rect
                     x, y, width, height = int(rect.x), int(rect.y), int(rect.width), int(rect.height)
                     player_image = frame[y:y+height, x:x+width] 
-                    jersey_color = jersey_classifier.classify_player_jersey(player_image)
+                    #jersey_color = jersey_classifier.classify_player_jersey(player_image)
+                    
+                    jersey_color = pjc.classify_jersey(player_image)
+                    #print(jersey_color2)
                     player_classifications.append(jersey_color)
                     if len(ball_detections) != 1:
                         player_in_possession_detection = None
