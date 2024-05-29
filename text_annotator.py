@@ -2,6 +2,8 @@ from common_imports import dataclass, List, cv2, np
 from geometry_utilities import Detection, draw_filled_rect, draw_text, Rect, Point, Color
 
 
+
+
 @dataclass
 class TextAnnotator:
     col: Color
@@ -9,6 +11,7 @@ class TextAnnotator:
     team2_color:Color
     text_color: Color
     text_thickness: int
+
 
     def annotate(self, image: np.ndarray, detections: List[Detection], jersey_colors: List[str]) -> np.ndarray:
         annotated_image = image.copy()
@@ -30,17 +33,25 @@ class TextAnnotator:
             x = center_x - width // 2
             y = center_y - height // 2 + 10
 
-            if jersey_color == "Team1":
+            if jersey_color == "Team 1":
                 color = self.team1_color
+                # annotated_image = draw_filled_rect(
+                # image=annotated_image,
+                # rect=Rect(x=x, y=y, width=width, height=height).pad(padding=5),
+                # color=Color.from_hex_string(self.team1_color))
             else:
                 color = self.team2_color
+                # annotated_image = draw_filled_rect(
+                # image=annotated_image,
+                # rect=Rect(x=x, y=y, width=width, height=height).pad(padding=5),
+                # color=Color.from_hex_string(self.team2_color))
                 
 
             # draw background
             annotated_image = draw_filled_rect(
-                image=annotated_image,
-                rect=Rect(x=x, y=y, width=width, height=height).pad(padding=5),
-                color=self.col)
+                 image=annotated_image,
+                 rect=Rect(x=x, y=y, width=width, height=height).pad(padding=5),
+                 color=color)
 
             # draw text
             text = f"{jersey_color}"

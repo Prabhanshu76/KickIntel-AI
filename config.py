@@ -76,7 +76,7 @@ def load_objects(config, boundaries):
         thickness=THICKNESS)
 
     player_goalkeeper_text_annotator = TextAnnotator(
-        PLAYER_COLOR, PLAYER_COLOR_BLUE, PLAYER_COLOR_WHITE, text_color=Color(255, 255, 255), text_thickness=2)
+        PLAYER_COLOR, TEAM_1_COLOR, TEAM_2_COLOR, text_color=Color(255, 255, 255), text_thickness=2)
 
     ball_marker_annotator = MarkerAnntator(
         color=BALL_MARKER_FILL_COLOR)
