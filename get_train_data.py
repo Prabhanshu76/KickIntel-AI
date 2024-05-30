@@ -21,15 +21,19 @@ def extract_player_images():
     player_images = []
     frame_count = 0
 
-    while frame_count < 35:
+    frame_count = 0
+    player_images = []
+
+    while frame_count < 1000:
         success, frame = cap.read()
         if not success:
             break
-        
+
         results = model(frame, size=1280)
         detections = Detection.from_results(
             pred=results.pred[0].cpu().numpy(),
-            names=model.names)
+            names=model.names
+        )
 
         player_detections = filter_detections_by_class(detections=detections, class_name="player")
 
@@ -38,7 +42,7 @@ def extract_player_images():
             x, y, width, height = int(rect.x), int(rect.y), int(rect.width), int(rect.height)
             player_image = frame[y:y+height, x:x+width]
             player_images.append(player_image)
-        
+
         frame_count += 1
 
     cap.release()
