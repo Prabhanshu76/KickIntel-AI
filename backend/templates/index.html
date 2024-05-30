@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Oxer</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="static/css/bootstrap.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="static/css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="static/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  
+
+    <header>
+      <nav>
+          <a onclick="document.getElementById('hero_area').scrollIntoView();" id="myBtn" title="Go to About">Home</a>
+          <a onclick="document.getElementById('about_area').scrollIntoView();" id="myBtn" title="Go to About">About</a>
+          <!-- <a onclick="document.getElementById('team').scrollIntoView();" id="myBtn" title="Go to About">Team</a> -->
+          <a href = "#section3"  id="myBtn">Team</a>
+      </nav>
+  </header>
+    <!-- header section strats -->
+    
+    <!-- end header section -->
+    <!-- slider section -->
+    <div class="hero_area" id="hero_area">
+    <section class="slider_section position-relative">
+      <!-- <a onclick="document.getElementById('about_area').scrollIntoView();" id="myBtn" title="Go to About">About</a> -->
+      
+      <div class="container-fluid">
+       
+        <div class="row">
+          
+          <div class="col-md-8 mx-auto">
+            
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                <div class="carousel-inner">
+                  <div class="box">
+                    <div class="detail-box">
+                      <h1>
+                        Video <br />
+                        Analysis
+                      </h1>
+
+                      <div class="btn-box">
+
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                          <input type="file" name="file" accept="video/*" id="myBtn">
+                          <input type="submit" value="Upload" id="myBtn">
+                      </form>
+
+                        <!-- <input type="button" href="#about_area" /> -->
+                        <!-- <input type="button" onClick="document.getElementById('about_area').scrollIntoView();" /> -->
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <input type="button" onClick="document.getElementById('container-fluid').scrollIntoView();" /> -->
+      <!-- <a href="#about_area">Go To About</a> -->
+
+    </section>
+    <!-- end slider section -->
+  </div>
+
+  <!-- about section -->
+
+  <div id="about_area">
+
+  <section class="about_section">
+    <br>
+    <br>
+    <br>
+    
+    <div class="container-fluid">
+      
+      <div class="row">
+        <!-- <div class="col-md-10 ml-auto pr-0"> -->
+          <div class="about_container">
+            <div class="row">
+              <div class="col-lg-3 col-md-5">
+                <div class="detail-box">
+                  <div class="heading_container">
+                    <!-- <button onclick="document.getElementById('hero_area').scrollIntoView();" id="myBtn" title="Go to Home">Home</button> -->
+                    <h2>
+                      About Project
+                    </h2>
+                  </div>
+                  <p>
+                    Our project revolves around using Computer Vision to analyze soccer matches in real-time, employing YOLOv5 and ByteTracker methodologies. We're focusing on improving soccer video analysis by spotting players and the ball with precision, tracking their movements, and identifying game events swiftly. By tapping into YOLOv5's excellent object detection and ByteTracker's efficient tracking, our goal is to accurately recognize players and the ball, allowing quick analysis and creating game highlights. These advanced computer vision tools offer coaches and analysts comprehensive insights to optimize team strategies. Our work aims to advance sports analytics by providing a fast, accurate, and adaptable solution for real-time soccer match analysis.
+                  </p>
+                  <a href=""><!-- add link to documentation here -->
+                    Read More
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+
+  </div>
+
+  
+  <!-- <div id="team"> -->
+    <section id="section3">
+      <br>
+      <br>
+      <h2>Section 3 - Team Members</h2>
+      <div class="team-members">
+          <div class="team-member">
+              <h3>Prabhanshu Singh</h3>
+          </div>
+          <div class="team-member">
+              <h3>Niranjan Bhaskar Pai</h3>
+          </div>
+          <div class="team-member">
+              <h3>Soham Shashank Pawgi</h3>
+          </div>
+          <div class="team-member">
+            <h3>Sairaj Jagdish Shetye</h3>
+            <p>Position: Tester</p>
+        </div>
+      </div>
+    </section>
+
+  <!-- </div> -->
+  <!-- end about section -->
+
+  <!-- class section -->
+  <!-- client section -->
+
+  <!-- end info section -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+
+  <script>
+    function openNav() {
+      document.getElementById("myNav").classList.toggle("menu_width");
+      document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style");
+    }
+  </script>
+
+  <!-- owl carousel script -->
+  <script type="text/javascript">
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 2
+        }
+      }
+    });
+
+
+    $(".owl_carousel1").owlCarousel({
+      loop: true,
+      margin: 25,
+      nav: true,
+      navText: [],
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        1000: {
+          items: 2
+        }
+      }
+    });
+  </script>
+  <!-- end owl carousel script -->
+
+  <script>
+    /** google_map js **/
+
+    function myMap() {
+      var mapProp = {
+        center: new google.maps.LatLng(40.712775, -74.005973),
+        zoom: 18,
+      };
+      var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    }
+  </script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+  <!-- End Google Map -->
+
+
+</body>
+
+</html>
