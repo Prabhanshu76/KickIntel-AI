@@ -32,3 +32,4 @@ backend/__pycache__/possession_maker.cpython-310.pyc
 backend/__pycache__/text_annotator.cpython-310.pyc
 backend/model/best.pt
 backend/__pycache__/app.cpython-310.pyc
+node_modules
