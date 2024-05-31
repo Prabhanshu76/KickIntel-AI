@@ -1,0 +1,184 @@
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.responses import StreamingResponse
+import shutil
+import os
+from fastapi.middleware.cors import CORSMiddleware
+
+# Import other required modules
+from common_imports import cv2
+from detection_utility import detections2boxes, match_detections_with_tracks
+from config import parse_config, load_model, load_video_capture, load_boundaries, load_objects, get_player_in_possession_proximity, torch
+from geometry_utilities import Detection, filter_detections_by_class
+import configparser
+from get_train_data import extract_player_images
+from jersey_classifier_kmeans import PlayerJerseyClassifier
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Adjust this to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+team1_passes = team2_passes = team1_possession_percentage = team2_possession_percentage = 0
+config = parse_config("config.ini")
+model = load_model(config['Paths']['WEIGHTS_PATH'])
+video_file_path = ''
+
+def generate_frames():
+    torch.cuda.empty_cache()
+    config = parse_config("config.ini")
+    cap = load_video_capture(config['Paths']['SOURCE_VIDEO_PATH'])
+    boundaries = load_boundaries(config)
+    objects = load_objects(config, boundaries)
+    PLAYER_IN_POSSESSION_PROXIMITY = get_player_in_possession_proximity(config)
+
+    jersey_classifier, base_annotator, player_goalkeeper_text_annotator, ball_marker_annotator, player_marker_annotator, byte_tracker, possession_calculator, pass_tracker = objects
+
+    global team1_passes, team2_passes, team1_possession_percentage, team2_possession_percentage
+    possession_team = ""
+
+    player_data = extract_player_images()
+    print(player_data)
+    pjc = PlayerJerseyClassifier()
+    pjc.train_kmeans_model(player_data)
+
+    player_in_possession_detection = None
+    player_in_possession_track_id = None
+    while True:
+        success, frame = cap.read()
+
+        if not success:
+            break
+
+        results = model(frame, size=1280)
+        detections = Detection.from_results(
+            pred=results.pred[0].cpu().numpy(),
+            names=model.names)
+
+        ball_detections = filter_detections_by_class(detections=detections, class_name="ball")
+        referee_detections = filter_detections_by_class(detections=detections, class_name="referee")
+        goalkeeper_detections = filter_detections_by_class(detections=detections, class_name="goalkeeper")
+        player_detections = filter_detections_by_class(detections=detections, class_name="player")
+        print(len(player_detections))
+
+        annotated_image = frame.copy()
+        player_classifications = []
+        
+        player_in_possession_detection = None
+
+        print(possession_team)
+        player_goalkeeper_detections = player_detections + goalkeeper_detections
+        tracked_detections = player_detections + goalkeeper_detections + referee_detections  
+        
+        if len(detections2boxes(detections=tracked_detections)):
+            tracks = byte_tracker.update(
+                output_results=detections2boxes(detections=tracked_detections),
+                img_info=frame.shape,
+                img_size=frame.shape
+            )
+
+            if len(tracks):
+                tracked_detections = match_detections_with_tracks(detections=tracked_detections, tracks=tracks)
+
+                tracked_referee_detections = filter_detections_by_class(detections=tracked_detections, class_name="referee")
+                tracked_goalkeeper_detections = filter_detections_by_class(detections=tracked_detections, class_name="goalkeeper")
+                tracked_player_detections = filter_detections_by_class(detections=tracked_detections, class_name="player")
+
+                for player_detection in tracked_player_detections:
+                    rect = player_detection.rect
+                    x, y, width, height = int(rect.x), int(rect.y), int(rect.width), int(rect.height)
+                    player_image = frame[y:y+height, x:x+width] 
+                    #jersey_color = jersey_classifier.classify_player_jersey(player_image)
+                    
+                    jersey_color = pjc.classify_jersey(player_image)
+                    #print(jersey_color2)
+                    player_classifications.append(jersey_color)
+                    if len(ball_detections) != 1:
+                        player_in_possession_detection = None
+                        player_in_possession_track_id = None
+                    elif player_detection.rect.pad(PLAYER_IN_POSSESSION_PROXIMITY).contains_point(point=ball_detections[0].rect.center):
+                        possession_team=jersey_color
+                        player_in_possession_detection = player_detection
+                        player_in_possession_track_id = player_detection.tracker_id 
+
+                annotated_image = base_annotator.annotate(
+                    image=annotated_image,
+                    detections=tracked_detections)
+
+                annotated_image = player_goalkeeper_text_annotator.annotate(
+                    image=annotated_image,
+                    detections=tracked_goalkeeper_detections + tracked_player_detections,
+                    jersey_colors=player_classifications)
+
+                annotated_image = ball_marker_annotator.annotate(
+                    image=annotated_image,
+                    detections=ball_detections)
+
+                annotated_image = player_marker_annotator.annotate(
+                    image=annotated_image,
+                    detections=[player_in_possession_detection] if player_in_possession_detection else [])
+
+                print(possession_team)
+                print("Player in Possession Track ID:", player_in_possession_track_id) 
+
+            pass_tracker.update_pass(possession_team, player_in_possession_track_id)
+            team1_passes, team2_passes = pass_tracker.get_passes()
+            possession_calculator.update_possession(possession_team)
+            current_frame = 1 + possession_calculator.team1_possession + possession_calculator.team2_possession
+            team1_possession_percentage, team2_possession_percentage = possession_calculator.get_possession_stats(current_frame)
+
+            print("Team 1 Passes:", team1_passes)
+            print("Team 2 Passes:", team2_passes)
+
+
+            print(f"Frame {current_frame}:")
+            print("Team 1 Possession Percentage: {:.2f}%".format(team1_possession_percentage))
+            print("Team 2 Possession Percentage: {:.2f}%".format(team2_possession_percentage))
+
+        annotated_image = cv2.resize(annotated_image, (640, 480))
+        ret, buffer = cv2.imencode('.jpg', annotated_image)
+        frameA = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frameA + b'\r\n') 
+
+def update_config_file(video_file_path):
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    # Update the SOURCE_VIDEO_PATH in the [Paths] section
+    config.set('Paths', 'SOURCE_VIDEO_PATH', video_file_path)
+
+    # Save the changes back to the config file
+    with open('config.ini', 'w') as config_file:
+        config.write(config_file)
+
+UPLOAD_DIRECTORY = "./uploaded_videos"  # Define a directory for uploaded videos
+
+# Ensure the upload directory exists
+if not os.path.exists(UPLOAD_DIRECTORY):
+    os.makedirs(UPLOAD_DIRECTORY)
+
+@app.post("/upload-video")
+async def upload_video(file: UploadFile = File(...)):
+    file_path = os.path.join(UPLOAD_DIRECTORY, "uploaded_video.mp4")
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    return {"filename": file.filename}
+
+@app.get("/video")
+async def stream_video():
+    video_file_path = os.path.join(UPLOAD_DIRECTORY, "uploaded_video.mp4")  # Full path to the uploaded video
+
+    if not os.path.exists(video_file_path):
+        raise HTTPException(status_code=404, detail="Video not found")
+
+    def stream_generator(file_path):
+        with open(file_path, mode="rb") as video_file:
+            while chunk := video_file.read(65536):
+                yield chunk
+
+    return StreamingResponse(stream_generator(video_file_path), media_type="video/mp4")

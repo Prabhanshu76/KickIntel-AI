@@ -24,7 +24,7 @@ def extract_player_images():
     frame_count = 0
     player_images = []
 
-    while frame_count < 1000:
+    while frame_count < 100:
         success, frame = cap.read()
         if not success:
             break
