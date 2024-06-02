@@ -1,21 +1,19 @@
+
+from common_imports import shutil, os, cv2, torch
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
-import shutil
-import os
-import cv2
-import torch
+from fastapi.middleware.cors import CORSMiddleware
 from config import parse_config, load_model, load_video_capture, load_boundaries, load_objects, get_player_in_possession_proximity
 from geometry_utilities import Detection, filter_detections_by_class
 from get_train_data import extract_player_images
 from jersey_classifier_kmeans import PlayerJerseyClassifier
 from detection_utility import detections2boxes, match_detections_with_tracks
-from fastapi.middleware.cors import CORSMiddleware
 import configparser
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Adjust this to your frontend URL
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
