@@ -56,6 +56,7 @@ const VideoPlayer = () => {
             style={{
               width: "640px",
               height: "360px",
+              position: "relative", // Add position relative for centering
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -72,17 +73,36 @@ const VideoPlayer = () => {
             />
           </div>
         ) : (
-          <img
-            src={videoSrc}
-            alt="Real-time video stream"
-            style={{
-              width: "640px",
-              height: "360px",
-              display: "block",
-              margin: "auto",
-            }}
-            onLoad={handleVideoPlay} // Trigger when the image (video) loads
-          />
+          <div style={{ position: "relative" }}>
+            {" "}
+            {/* Add position relative for centering */}
+            <img
+              src={videoSrc}
+              alt="PLease click on reset or refresh the page"
+              style={{
+                width: "640px",
+                height: "360px",
+                display: "block",
+                margin: "auto",
+              }}
+              onLoad={handleVideoPlay} // Trigger when the image (video) loads
+            />
+            {!isVideoPlaying && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  color: "white",
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                }}
+              >
+                Processing...
+              </div>
+            )}
+          </div>
         )}
         <StatsDisplay stats={stats} />
       </div>

@@ -17,14 +17,15 @@ const StatsDisplay = ({ stats }) => {
         }}
       >
         <div style={{ flex: 1, textAlign: "center" }}>
-          <h4>Team 1</h4>
+          <h4 style={{ borderBottom: "3px solid red" }}>Team 1</h4>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
-          <h4>Team 2</h4>
+          <h4 style={{ borderBottom: "3px solid blue" }}>Team 2</h4>
         </div>
       </div>
+
       <div style={{ margin: "20px 0" }}>
-        <p>Passing</p>
+        <p>Passes</p>
       </div>
       <div
         style={{
@@ -60,12 +61,12 @@ const StatsDisplay = ({ stats }) => {
             text={`${Math.round(stats.team1_possession_percentage)}%`}
             styles={buildStyles({
               textSize: "16px",
-              pathColor: `rgba(62, 152, 199, ${
+              pathColor: `rgba(255, 0, 0, ${
                 stats.team1_possession_percentage / 100
               })`,
               textColor: "#FFFFFF",
-              trailColor: "#d6d6d6",
-              backgroundColor: "#3e98c7",
+              trailColor: "#6c6d70",
+              backgroundColor: "red",
             })}
           />
         </div>
@@ -82,12 +83,12 @@ const StatsDisplay = ({ stats }) => {
             text={`${Math.round(team2_possession_percentage)}%`}
             styles={buildStyles({
               textSize: "16px",
-              pathColor: `rgba(62, 152, 199, ${
+              pathColor: `rgba(0, 0, 255, ${
                 team2_possession_percentage / 100
               })`,
               textColor: "#FFFFFF",
-              trailColor: "#d6d6d6",
-              backgroundColor: "#3e98c7",
+              trailColor: "#6c6d70",
+              backgroundColor: "blue",
               marginLeft: "10%",
             })}
           />
