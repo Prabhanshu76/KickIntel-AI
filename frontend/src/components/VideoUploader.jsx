@@ -1,27 +1,27 @@
-// VideoUploader.js
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-
+import React, { useState } from "react";
 
 const VideoUploader = ({ onUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    if (file) {
+      handleFileUpload(file);
+    }
   };
 
-  const handleFileUpload = () => {
-    if (!selectedFile) {
-      console.error('No file selected');
+  const handleFileUpload = (file) => {
+    if (!file) {
+      console.error("No file selected");
       return;
     }
-    onUpload(selectedFile);
+    onUpload(file);
   };
 
   return (
     <div>
       <input type="file" accept="video/*" onChange={handleFileChange} />
-      <Button variant="dark" onClick={handleFileUpload}>Submit</Button>
     </div>
   );
 };

@@ -50,7 +50,7 @@ body {
 
 .new-container .new-box::before,
 .new-container .new-box::after {
-  background: linear-gradient(315deg, #ffbc00, #ff0058);
+  background: linear-gradient(315deg, 	#09203f, 	#537895);
 }
 
 .new-container .new-box span {
