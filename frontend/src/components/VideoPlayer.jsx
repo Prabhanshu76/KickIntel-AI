@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { uploadVideo, fetchStats } from "./api";
 import StatsDisplay from "./StatsDisplay";
 import VideoUploader from "./VideoUploader";
-import loadingGif from "../assets/sb1.gif"; // Import the loading GIF
+import loadingGif from "../assets/sb1.gif";
 
 const VideoPlayer = () => {
   const [videoSrc, setVideoSrc] = useState("");
@@ -21,14 +21,25 @@ const VideoPlayer = () => {
     }
   }, [videoSrc]);
 
-  const handleFileUpload = async (file) => {
+  const handleFileUpload = async (file, isDemo = false) => {
     try {
-      const videoPath = await uploadVideo(file);
-      setVideoSrc(
-        `http://localhost:8000/video-feed?video_path=${encodeURIComponent(
-          videoPath
-        )}`
-      );
+      if (!isDemo) {
+        const videoPath = await uploadVideo(file);
+        console.log("Path:::" + videoPath);
+        setVideoSrc(
+          `http://localhost:8000/video-feed?video_path=${encodeURIComponent(
+            videoPath
+          )}`
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDemoVideo = async (demoNumber) => {
+    try {
+      setVideoSrc(`http://localhost:8000/video-feed`);
     } catch (error) {
       console.error(error);
     }
@@ -49,9 +60,9 @@ const VideoPlayer = () => {
 
   return (
     <div>
-      <VideoUploader onUpload={handleFileUpload} />
+      <VideoUploader onUpload={handleFileUpload} onTryDemo={fetchDemoVideo} />
       <div>
-        {!isVideoPlaying && !videoSrc ? ( // Check if video is playing or video source is empty
+        {!isVideoPlaying && !videoSrc ? (
           <div
             style={{
               width: "640px",
@@ -78,7 +89,7 @@ const VideoPlayer = () => {
             {/* Add position relative for centering */}
             <img
               src={videoSrc}
-              alt="PLease click on reset or refresh the page"
+              alt="Out of memory, please click reset or refresh the page."
               style={{
                 width: "640px",
                 height: "360px",

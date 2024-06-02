@@ -50,8 +50,11 @@ body {
 
 .new-container .new-box::before,
 .new-container .new-box::after {
-  background: linear-gradient(315deg, rgba(48, 57, 103, 0.8), rgba(178, 164, 150, 0.8));
-
+  background: linear-gradient(
+    315deg,
+    rgba(48, 57, 103, 0.8),
+    rgba(178, 164, 150, 0.8)
+  );
 }
 
 .new-container .new-box span {
@@ -94,10 +97,10 @@ body {
 @keyframes animate {
   0%,
   100% {
-      transform: translateY(10px);
+    transform: translateY(10px);
   }
   50% {
-      transform: translateY(-10px);
+    transform: translateY(-10px);
   }
 }
 

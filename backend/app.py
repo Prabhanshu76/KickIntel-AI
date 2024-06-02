@@ -27,6 +27,7 @@ model = load_model(config['Paths']['WEIGHTS_PATH'])
 video_file_path = ''
 
 UPLOAD_DIRECTORY = "./uploaded_videos"
+DEMO_VIDEOS_DIRECTORY = "./demo_videos"
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
@@ -169,6 +170,20 @@ async def get_data():
         'team1_possession_percentage': team1_possession_percentage,
         'team2_possession_percentage': team2_possession_percentage
     })
+
+@app.get("/demo-video/{demo_number}")
+async def copy_demo_video(demo_number: int):
+    if demo_number not in [1, 2]:
+        raise HTTPException(status_code=400, detail="Demo number must be 1 or 2")
+
+    demo_video_path = os.path.join(DEMO_VIDEOS_DIRECTORY, f"demo{demo_number}.mp4")
+    if not os.path.exists(demo_video_path):
+        raise HTTPException(status_code=404, detail=f"Demo{demo_number}.mp4 not found")
+
+    target_path = os.path.join(UPLOAD_DIRECTORY, "uploaded_video.mp4")
+    shutil.copyfile(demo_video_path, target_path)
+
+    return {"message": f"Demo{demo_number}.mp4 copied and renamed to uploaded_video.mp4"}
 
 
 def update_config_file(video_file_path):
