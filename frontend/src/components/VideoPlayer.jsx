@@ -1,4 +1,3 @@
-// VideoPlayer.js
 import React, { useState, useEffect } from 'react';
 import { uploadVideo, fetchStats } from './api';
 import StatsDisplay from './StatsDisplay';
@@ -12,6 +11,7 @@ const VideoPlayer = () => {
     team1_possession_percentage: 0,
     team2_possession_percentage: 0,
   });
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false); // Track video playing status
 
   useEffect(() => {
     if (videoSrc) {
@@ -38,20 +38,37 @@ const VideoPlayer = () => {
     }
   };
 
+  const handleVideoPlay = () => {
+    setIsVideoPlaying(true);
+  };
+
   return (
     <div>
-      <h2>Video Player</h2>
       <VideoUploader onUpload={handleFileUpload} />
-      {videoSrc && (
-        <div>
+      <div>
+        {!isVideoPlaying && !videoSrc ? ( // Check if video is playing or video source is empty
+          <div
+            style={{
+              width: '640px',
+              height: '360px',
+              backgroundColor: 'lightgray', // Placeholder box color
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            Loading Video...
+          </div>
+        ) : (
           <img
             src={videoSrc}
             alt="Real-time video stream"
             style={{ width: '640px', height: '360px', display: 'block', margin: 'auto' }}
+            onLoad={handleVideoPlay} // Trigger when the image (video) loads
           />
-          <StatsDisplay stats={stats} />
-        </div>
-      )}
+        )}
+        <StatsDisplay stats={stats} />
+      </div>
     </div>
   );
 };

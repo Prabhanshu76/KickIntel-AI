@@ -1,0 +1,138 @@
+/* CardOne.css */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #1d061a;
+}
+
+.new-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  height: 80vh;
+  padding: 40px 0;
+}
+
+.new-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+
+.new-container .new-box::before,
+.new-container .new-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px; /* Match the hover state */
+  width: calc(100% - 90px); /* Match the hover state */
+  height: 100%;
+  background: #fff;
+  border-radius: 8px;
+  transform: skewX(0deg); /* Match the hover state */
+  transition: 0.5s;
+}
+
+.new-container .new-box::before,
+.new-container .new-box::after {
+  background: linear-gradient(315deg, #ffbc00, #ff0058);
+}
+
+.new-container .new-box span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.new-container .new-box span::before,
+.new-container .new-box span::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  opacity: 1; /* Match the hover state */
+  transition: 0.5s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  animation: animate 2s ease-in-out infinite;
+}
+
+.new-container .new-box span::before {
+  top: -50px;
+  left: 50px;
+}
+
+.new-container .new-box span::after {
+  bottom: -50px;
+  right: 100px;
+  animation-delay: -1s;
+}
+
+@keyframes animate {
+  0%,
+  100% {
+      transform: translateY(10px);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+}
+
+.new-container .new-box .new-content {
+  z-index: 1;
+  left: -25px; /* Match the hover state */
+  padding: 60px 40px; /* Match the hover state */
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  transition: 0.5s;
+  color: #fff;
+}
+
+.new-container .new-box .new-content h2 {
+  font-size: 2em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.new-container .new-box .new-content p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  line-height: 1.4em;
+}
+
+.new-container .new-box .new-content a {
+  display: inline-block;
+  font-size: 1.1em;
+  color: #111;
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 5px;
+}

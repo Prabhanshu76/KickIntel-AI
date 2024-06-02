@@ -1,6 +1,6 @@
 // VideoUploader.js
 import React, { useState } from 'react';
-
+import Button from 'react-bootstrap/Button';
 
 
 const VideoUploader = ({ onUpload }) => {
@@ -21,7 +21,7 @@ const VideoUploader = ({ onUpload }) => {
   return (
     <div>
       <input type="file" accept="video/*" onChange={handleFileChange} />
-      <button onClick={handleFileUpload}>Submit</button>
+      <Button variant="dark" onClick={handleFileUpload}>Submit</Button>
     </div>
   );
 };

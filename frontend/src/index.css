@@ -23,7 +23,7 @@ code {
   transform: translate(-50%, -50%); /* Center the video */
   object-fit: cover; /* Ensure the video covers the entire viewport */
   z-index: -1;
-  filter: blur(14px) brightness(70%) sepia(20%) saturate(90%) brightness(70%) ; /* Adjust the blur amount as needed */
+  filter: blur(20px) brightness(70%) sepia(20%) saturate(90%) brightness(70%) ; /* Adjust the blur amount as needed */
   background-color: rgba(0, 0, 0, 0.6); 
   /*filter: sepia(100%) saturate(200%) brightness(70%) hue-rotate(330deg);*/
 }
