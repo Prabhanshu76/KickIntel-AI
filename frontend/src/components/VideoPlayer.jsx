@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { uploadVideo, fetchStats } from "./api";
 import StatsDisplay from "./StatsDisplay";
 import VideoUploader from "./VideoUploader";
+import loadingGif from "../assets/sb1.gif"; // Import the loading GIF
 
 const VideoPlayer = () => {
   const [videoSrc, setVideoSrc] = useState("");
@@ -55,13 +56,20 @@ const VideoPlayer = () => {
             style={{
               width: "640px",
               height: "360px",
-              backgroundColor: "lightgray", // Placeholder box color
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            Loading Video...
+            <img
+              src={loadingGif}
+              alt="Loading..."
+              style={{
+                width: "150px",
+                height: "150px",
+                objectFit: "contain",
+              }}
+            />
           </div>
         ) : (
           <img
