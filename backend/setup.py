@@ -13,6 +13,9 @@ def run_command(command, cwd=None):
 def download_file(url, output):
     run_command(f"gdown {url} -O {output}")
 
+def unzip_file(zip_file, output_dir):
+    shutil.unpack_archive(zip_file, output_dir)
+
 def main():
     # Define the paths and requirements
     current_directory = Path.cwd()
