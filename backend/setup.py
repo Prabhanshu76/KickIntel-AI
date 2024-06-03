@@ -18,6 +18,7 @@ def unzip_file(zip_file, output_dir):
 
 def main():
     # Define the paths and requirements
+    home_path = Path.home()
     current_directory = Path.cwd()
     requirements1 = "requirements.txt"
     #requirements2 = "requirements2.txt"
@@ -61,8 +62,8 @@ def main():
     os.chdir(current_directory)
     
     # Clone and set up yolov5
-    yolov5_path = current_directory / "yolov5"
-    run_command(f"git clone https://github.com/ultralytics/yolov5", cwd=current_directory)
+    yolov5_path = home_path / "yolov5"
+    run_command(f"git clone https://github.com/ultralytics/yolov5", cwd=home_path)
     run_command(f"pip install -r {yolov5_path}/requirements.txt", cwd=yolov5_path)
 
 if __name__ == "__main__":
