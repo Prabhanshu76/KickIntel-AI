@@ -183,6 +183,9 @@ async def copy_demo_video(demo_number: int):
 
     return {"message": f"Demo{demo_number}.mp4 copied and renamed to uploaded_video.mp4"}
 
+@app.get("/sanity_check")
+async def sanity_check():
+    return {"status": "API is up and running!"}
 
 def update_config_file(video_file_path):
     config = configparser.ConfigParser()
