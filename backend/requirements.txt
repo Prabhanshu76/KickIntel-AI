@@ -11,3 +11,4 @@ loguru==0.7.2
 fastapi
 torch
 torchvision
+scikit-learn
