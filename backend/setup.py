@@ -56,7 +56,7 @@ def main():
     install_requirements(requirements_path)
 
     # Run setup.py develop
-    run_command(f"python setup.py develop", cwd=byte_track_path)
+    run_command(f"python3 setup.py develop", cwd=byte_track_path)
 
     # Change the current working directory back to the original
     os.chdir(current_directory)
