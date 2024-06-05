@@ -4,6 +4,8 @@ import StatsDisplay from "./StatsDisplay";
 import VideoUploader from "./VideoUploader";
 import loadingGif from "../assets/sb1.gif";
 
+const BASE_URL = process.env.REACT_APP_API_URL;
+
 const VideoPlayer = () => {
   const [videoSrc, setVideoSrc] = useState("");
   const [stats, setStats] = useState({
@@ -27,9 +29,7 @@ const VideoPlayer = () => {
         const videoPath = await uploadVideo(file);
         console.log("Path:::" + videoPath);
         setVideoSrc(
-          `http://localhost:8000/video-feed?video_path=${encodeURIComponent(
-            videoPath
-          )}`
+          `${BASE_URL}/video-feed?video_path=${encodeURIComponent(videoPath)}`
         );
       }
     } catch (error) {
@@ -39,7 +39,7 @@ const VideoPlayer = () => {
 
   const fetchDemoVideo = async (demoNumber) => {
     try {
-      setVideoSrc(`http://localhost:8000/video-feed`);
+      setVideoSrc(`${BASE_URL}/video-feed`);
     } catch (error) {
       console.error(error);
     }
@@ -85,8 +85,6 @@ const VideoPlayer = () => {
           </div>
         ) : (
           <div style={{ position: "relative" }}>
-            {" "}
-            {/* Add position relative for centering */}
             <img
               src={videoSrc}
               alt="Out of memory, please click reset or refresh the page."
