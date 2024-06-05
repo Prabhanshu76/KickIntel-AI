@@ -75,6 +75,16 @@
 3. Explore the generated insights.
 4. To upload a new video, click on the refresh button to clear any previous data, then upload the new video.
 
+## Future Work
+
+- Football pitch keypoint detection to accurately map players and the ball on a 2D pitch.
+- Team heat map analysis for visualizing player positions and movement patterns.
+- Pass analysis to evaluate passing performance and identify passing trends.
+- Pass accuracy tracking for individual players to assess their passing precision.
+- Distance covered analysis to measure player activity and performance throughout the match.
+- Offside detection to identify and analyze offside occurrences during gameplay.
+
+
 ## References
 
 This project is hugely inspired and referred from the Roboflow blog: Roboflow. (2022). Track Football Players Using Computer Vision [Blog post and Jupyter Notebook]. Retrieved from [Roboflow Blog](https://blog.roboflow.com/track-football-players/) and [Roboflow GitHub](https://github.com/roboflow/notebooks/blob/main/notebooks/how-to-track-football-players.ipynb).
