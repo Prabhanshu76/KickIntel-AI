@@ -9,11 +9,14 @@ from get_train_data import extract_player_images
 from jersey_classifier_kmeans import PlayerJerseyClassifier
 from detection_utility import detections2boxes, match_detections_with_tracks
 import configparser
+from dotenv import load_dotenv
 
+load_dotenv()
+api_url = os.getenv("API_URL")
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost","http://localhost:80"],
+    allow_origins=["http://localhost:3000", "http://localhost","http://localhost:80",api_url],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

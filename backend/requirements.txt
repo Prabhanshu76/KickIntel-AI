@@ -12,3 +12,4 @@ fastapi
 torch
 torchvision
 scikit-learn
+python-dotenv
